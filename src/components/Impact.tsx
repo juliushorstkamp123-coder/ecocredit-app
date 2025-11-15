@@ -37,13 +37,27 @@ const Impact = () => {
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16 space-y-4">
+        <div className="text-center mb-12 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold text-primary-foreground">
             Gemeinsam bewegen wir was
           </h2>
           <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto">
             Unsere Community macht bereits einen echten Unterschied
           </p>
+        </div>
+        
+        <div className="max-w-4xl mx-auto mb-16">
+          <div className="bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-2xl p-8 md:p-12 text-center">
+            <div className="text-6xl md:text-7xl font-bold text-primary-foreground mb-4">
+              Nur 2%
+            </div>
+            <p className="text-2xl md:text-3xl font-semibold text-primary-foreground mb-3">
+              des Klima-Budgets der Bundesregierung
+            </p>
+            <p className="text-lg text-primary-foreground/90">
+              würden ausreichen, um EcoCredit deutschlandweit zu finanzieren
+            </p>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
