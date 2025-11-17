@@ -50,8 +50,20 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full border border-primary/20">
-            <Bell className="w-4 h-4" />
-            <span className="text-sm font-medium">Jetzt Warteliste beitreten</span>
+            <Bell className="w-4 h-4 animate-pulse" />
+            <span className="text-sm font-medium">🎁 Exklusiv: Frühe Anmeldung = Mehr sparen</span>
+          </div>
+          
+          <div className="space-y-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+              Sichere dir{" "}
+              <span className="bg-gradient-primary bg-clip-text text-transparent">
+                exklusive Launch-Rabatte
+              </span>
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto">
+              Trage dich in die Warteliste ein und erhalte beim Launch zusätzliche Bonuspunkte und Sonderkonditionen
+            </p>
           </div>
           
           <Form {...form}>
@@ -79,9 +91,12 @@ const Hero = () => {
                   className="bg-gradient-primary hover:opacity-90 shadow-medium"
                 >
                   <Bell className="w-4 h-4 mr-2" />
-                  Benachrichtigen
+                  Jetzt sparen
                 </Button>
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                ✨ Wartelisten-Mitglieder erhalten Startbonus beim Launch
+              </p>
             </form>
           </Form>
           
