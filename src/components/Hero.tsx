@@ -155,14 +155,14 @@ const Hero = () => {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-foreground leading-tight">
-            Gutes tun.{" "}
+            Gutes tun in{" "}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
-              Prämien sammeln.
+              Berlin Wilmersdorf.
             </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            EcoCredit ist das erste Bonusprogramm, das nachhaltige Entscheidungen im Alltag belohnt – wie Payback, nur für den Planeten.
+            EcoCredit belohnt deine nachhaltigen Entscheidungen in Wilmersdorf – wie Payback, nur für den Planeten und deinen Kiez.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
