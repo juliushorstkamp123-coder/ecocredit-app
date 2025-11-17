@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -15,11 +17,14 @@ import {
 } from "@/components/ui/form";
 
 const waitlistSchema = z.object({
-  email: z.string().email({ message: "Bitte gib eine gültige E-Mail-Adresse ein" }),
+  email: z.string().trim().email({ message: "Bitte gib eine gültige E-Mail-Adresse ein" }).max(255),
 });
 
 const Hero = () => {
   const { toast } = useToast();
+  const [waitlistCount, setWaitlistCount] = useState<number>(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<z.infer<typeof waitlistSchema>>({
     resolver: zodResolver(waitlistSchema),
     defaultValues: {
@@ -27,13 +32,54 @@ const Hero = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof waitlistSchema>) => {
-    console.log("Waitlist submission:", values);
-    toast({
-      title: "Erfolgreich eingetragen! 🎉",
-      description: "Du erhältst eine Benachrichtigung, sobald wir starten.",
-    });
-    form.reset();
+  useEffect(() => {
+    fetchWaitlistCount();
+  }, []);
+
+  const fetchWaitlistCount = async () => {
+    const { count, error } = await supabase
+      .from('waitlist')
+      .select('*', { count: 'exact', head: true });
+    
+    if (!error && count !== null) {
+      setWaitlistCount(count);
+    }
+  };
+
+  const onSubmit = async (values: z.infer<typeof waitlistSchema>) => {
+    setIsSubmitting(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('join-waitlist', {
+        body: { email: values.email },
+      });
+
+      if (error) {
+        const errorMessage = data?.error || 'Ein Fehler ist aufgetreten';
+        toast({
+          title: "Fehler",
+          description: errorMessage,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Erfolgreich eingetragen! 🎉",
+        description: "Du erhältst eine Benachrichtigung, sobald wir starten.",
+      });
+      
+      form.reset();
+      fetchWaitlistCount();
+    } catch (error) {
+      toast({
+        title: "Fehler",
+        description: "Ein Fehler ist aufgetreten. Bitte versuche es später erneut.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -51,7 +97,9 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full border border-primary/20">
             <Bell className="w-4 h-4 animate-pulse" />
-            <span className="text-sm font-medium">🎁 Exklusiv: Frühe Anmeldung = Mehr sparen</span>
+            <span className="text-sm font-medium">
+              🎁 Exklusiv: Frühe Anmeldung = Mehr sparen {waitlistCount > 0 && `• ${waitlistCount} bereits dabei`}
+            </span>
           </div>
           
           <div className="space-y-4">
@@ -88,10 +136,11 @@ const Hero = () => {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={isSubmitting}
                   className="bg-gradient-primary hover:opacity-90 shadow-medium"
                 >
                   <Bell className="w-4 h-4 mr-2" />
-                  Jetzt sparen
+                  {isSubmitting ? 'Wird gespeichert...' : 'Jetzt sparen'}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
