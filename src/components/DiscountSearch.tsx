@@ -17,10 +17,10 @@ const DiscountSearch = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8 space-y-3">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              Finde Rabatte in Wilmersdorf
+              Finde Rabatte in Berlin
             </h2>
             <p className="text-lg text-muted-foreground">
-              Entdecke nachhaltige Partner in deinem Kiez und spare bei jedem Einkauf
+              Entdecke nachhaltige Partner in deiner Stadt und spare bei jedem Einkauf
             </p>
           </div>
 
@@ -29,7 +29,7 @@ const DiscountSearch = () => {
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Straße oder Ort in Wilmersdorf eingeben..."
+                placeholder="Stadtteil, Straße oder Ort in Berlin eingeben..."
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="pl-10 h-12 text-base border-2 focus-visible:ring-primary"
@@ -50,34 +50,34 @@ const DiscountSearch = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setLocation("Kurfürstendamm")}
+              onClick={() => setLocation("Mitte")}
               className="border-2 hover:border-primary hover:bg-primary/5"
             >
-              Kurfürstendamm
+              Mitte
             </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setLocation("Fehrbelliner Platz")}
+              onClick={() => setLocation("Prenzlauer Berg")}
               className="border-2 hover:border-primary hover:bg-primary/5"
             >
-              Fehrbelliner Platz
+              Prenzlauer Berg
             </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setLocation("Volkspark")}
+              onClick={() => setLocation("Kreuzberg")}
               className="border-2 hover:border-primary hover:bg-primary/5"
             >
-              Volkspark
+              Kreuzberg
             </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setLocation("Prager Platz")}
+              onClick={() => setLocation("Charlottenburg")}
               className="border-2 hover:border-primary hover:bg-primary/5"
             >
-              Prager Platz
+              Charlottenburg
             </Button>
           </div>
         </div>

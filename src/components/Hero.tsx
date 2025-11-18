@@ -157,12 +157,12 @@ const Hero = () => {
           <h1 className="text-5xl md:text-7xl font-bold text-foreground leading-tight">
             Gutes tun in{" "}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
-              Berlin Wilmersdorf.
+              Berlin.
             </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            EcoCredit belohnt deine nachhaltigen Entscheidungen in Wilmersdorf – wie Payback, nur für den Planeten und deinen Kiez.
+            EcoCredit belohnt deine nachhaltigen Entscheidungen in Berlin – wie Payback, nur für den Planeten und deinen Kiez.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
