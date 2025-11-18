@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      rate_limit_log: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          ip: string
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          ip: string
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          ip?: string
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string
@@ -37,7 +58,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_rate_limits: { Args: never; Returns: undefined }
+      get_waitlist_count: { Args: never; Returns: number }
     }
     Enums: {
       [_ in never]: never

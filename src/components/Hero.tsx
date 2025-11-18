@@ -37,12 +37,13 @@ const Hero = () => {
   }, []);
 
   const fetchWaitlistCount = async () => {
-    const { count, error } = await supabase
-      .from('waitlist')
-      .select('*', { count: 'exact', head: true });
-    
-    if (!error && count !== null) {
-      setWaitlistCount(count);
+    try {
+      const { data, error } = await supabase.rpc('get_waitlist_count');
+      
+      if (error) throw error;
+      setWaitlistCount(data || 0);
+    } catch (error) {
+      console.error('Error fetching waitlist count:', error);
     }
   };
 

@@ -11,6 +11,39 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    // Rate limiting: Get IP address from request
+    const rateLimitKey = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
+    
+    // Check rate limit: max 5 attempts per IP in the last minute
+    const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
+    const { data: recentAttempts, error: rateLimitError } = await supabaseClient
+      .from('rate_limit_log')
+      .select('id')
+      .eq('ip', rateLimitKey)
+      .eq('endpoint', 'join-waitlist')
+      .gte('created_at', oneMinuteAgo);
+
+    if (rateLimitError) {
+      console.error('Rate limit check error:', rateLimitError);
+    }
+
+    if (recentAttempts && recentAttempts.length >= 5) {
+      return new Response(
+        JSON.stringify({ error: 'Zu viele Anfragen. Bitte versuche es in einer Minute erneut.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Log this attempt
+    await supabaseClient
+      .from('rate_limit_log')
+      .insert([{ ip: rateLimitKey, endpoint: 'join-waitlist' }]);
+
     const { email } = await req.json();
 
     if (!email || typeof email !== 'string') {
@@ -28,11 +61,6 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
 
     const { data, error } = await supabaseClient
       .from('waitlist')
@@ -56,7 +84,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log('Successfully added to waitlist:', email);
+    console.log('Successfully added to waitlist');
 
     return new Response(
       JSON.stringify({ success: true, data }),
